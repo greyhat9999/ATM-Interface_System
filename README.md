@@ -75,7 +75,7 @@ ATMSystem/
 
 
 Contributors
-Vansh Chaudhary
+Vansh Chaudhary & Aryan Yadav
 
 License
 MIT License - Free for academic and personal use
