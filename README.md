@@ -23,32 +23,58 @@ A fully functional ATM simulation system built with Java Swing and MySQL.
    - MySQL Server 5.7+
    - MySQL Connector/J
 
-2. **Database Setup**:
-   ```sql
-   CREATE DATABASE atm_system;
-   USE atm_system;
-   
-   CREATE TABLE users (
-       user_id INT AUTO_INCREMENT PRIMARY KEY,
-       name VARCHAR(100) NOT NULL,
-       pin VARCHAR(255) NOT NULL,
-       balance DECIMAL(15, 2) DEFAULT 0.00
-   );
-   
-   CREATE TABLE transactions (
-       transaction_id INT AUTO_INCREMENT PRIMARY KEY,
-       user_id INT NOT NULL,
-       type ENUM('WITHDRAWAL', 'DEPOSIT', 'TRANSFER') NOT NULL,
-       amount DECIMAL(15, 2) NOT NULL,
-       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-       description VARCHAR(255),
-       FOREIGN KEY (user_id) REFERENCES users(user_id)
-   );
-   
-   -- Test user (PIN: 1234)
-   INSERT INTO users (name, pin, balance) 
-   VALUES ('John Doe', SHA2('1234', 256), 1000.00);
+2. ## 🗄️ Database Setup (MySQL)
 
+This project uses MySQL for storing user and transaction data. The entire database setup is handled automatically when the application starts.
+
+### ✅ What Gets Created Automatically
+
+- A MySQL database named `atm_system`
+- Two tables:
+  - `users`
+  - `transactions`
+
+### 🧱 Table Structures
+
+```sql
+-- users table
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    pin CHAR(64),
+    balance DOUBLE
+);
+
+-- transactions table
+CREATE TABLE IF NOT EXISTS transactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    type VARCHAR(20),
+    amount DOUBLE,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+⚙️ Java Integration
+The Java code uses a DBConnection utility that:
+
+Connects to MySQL
+
+Creates the atm_system database (if it doesn’t exist)
+
+Creates the required tables automatically
+
+No manual SQL execution is needed.
+
+You only need to set your MySQL credentials in DBConnection.java:
+
+java
+Copy
+Edit
+private static final String USER = "your_mysql_username";
+private static final String PASSWORD = "your_mysql_password";
+Once you run the application, the database and its tables will be ready to use
    
 Run the Application:
 
